@@ -1,0 +1,53 @@
+name: Java CI
+
+on:
+    pull_request:
+    workflow_dispatch:
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Code auschecken
+              uses: actions/checkout@v4
+
+            - name: Java 25 einrichten
+              uses: actions/setup-java@v4
+              with:
+                  java-version: '25'
+                  distribution: 'temurin'
+
+            - name: Projekt kompilieren
+              run: ./gradlew classes
+    test:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Code auschecken
+              uses: actions/checkout@v4
+
+            - name: Java 25 einrichten
+              uses: actions/setup-java@v4
+              with:
+                  java-version: '25'
+                  distribution: 'temurin'
+
+            - name: Test ausfuehren
+              run: ./gradlew test
+
+    format:
+        needs: build
+        runs-on: ubuntu-latest
+        steps:
+            - name: Code auschecken
+              uses: actions/checkout@v4
+
+            - name: Java 25 einrichten
+              uses: actions/setup-java@v4
+              with:
+                  java-version: '25'
+                  distribution: 'temurin'
+
+            - name: Format pruefen
+              run: ./gradlew spotlessCheck
+
