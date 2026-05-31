@@ -18,13 +18,13 @@ public final class MiniJavaTokens {
   // pattern can be selected as the "highlighted" region.
   public static List<Token> defaultTokens() {
     return List.of(
-        //0.#String Example: string literals (students should define further tokens below)
+        // 0.#String Example: string literals (students should define further tokens below)
         Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
 
         // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
         // annotations, comments, identifiers, numbers, operators, etc.
 
-        //1. #Einzeilige Kommentar, wird in die entsprechende Farbe gefaerbt
+        // 1. #Einzeilige Kommentar, wird in die entsprechende Farbe gefaerbt
         Token.of(Pattern.compile("//.*"), MiniJavaColours.LINE_COMMENT_COLOUR),
 
         /*
@@ -42,7 +42,9 @@ public final class MiniJavaTokens {
         /*
         4.#Keyword
          */
-        Token.of(Pattern.compile("\\b(package|import|class|public|private|final|return|null|new)\\b"), MiniJavaColours.KEYWORD_COLOUR),
+        Token.of(
+            Pattern.compile("\\b(package|import|class|public|private|final|return|null|new)\\b"),
+            MiniJavaColours.KEYWORD_COLOUR),
 
         /*
         5.Annotation
@@ -52,8 +54,6 @@ public final class MiniJavaTokens {
         /*
         6.Characters
          */
-        Token.of(Pattern.compile("'([^'\\\\]|\\\\.)'"), MiniJavaColours.CHAR_LITERAL_COLOUR)
-
-        );
+        Token.of(Pattern.compile("'([^'\\\\]|\\\\.)'"), MiniJavaColours.CHAR_LITERAL_COLOUR));
   }
 }
