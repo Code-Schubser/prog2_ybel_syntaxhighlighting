@@ -18,11 +18,42 @@ public final class MiniJavaTokens {
   // pattern can be selected as the "highlighted" region.
   public static List<Token> defaultTokens() {
     return List.of(
-        // Example: string literals (students should define further tokens below)
-        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR)
+        // 0.#String Example: string literals (students should define further tokens below)
+        Token.of(Pattern.compile("\"([^\"\\\\]|\\\\.)*\""), MiniJavaColours.STRING_LITERAL_COLOUR),
 
         // TODO: Define additional tokens for MiniJava, e.g. character literals, keywords,
         // annotations, comments, identifiers, numbers, operators, etc.
-        );
+
+        // 1. #Einzeilige Kommentar, wird in die entsprechende Farbe gefaerbt
+        Token.of(Pattern.compile("//.*"), MiniJavaColours.LINE_COMMENT_COLOUR),
+
+        /*
+        2.#Javadoc Kommentar muss vor Mehrzeiligen Kommentar stehen, da sonst dieser Token verschluckt wird
+         */
+        Token.of(Pattern.compile("/\\*\\*[\\s\\S]*?\\*/"), MiniJavaColours.JAVADOC_COMMENT_COLOUR),
+
+        /*
+        3.#Mehrzeiliger Kommentar
+        Der Ausdruck "." reicht nicht, weil er am Ende der Zeile abbricht
+        [\\s\\S] erlaubt alle sichtbaren und unsichtbaren Zeichen (darunter auch Zeilenumbrüche)
+        */
+        Token.of(Pattern.compile("/\\*[\\s\\S]*?\\*/"), MiniJavaColours.BLOCK_COMMENT_COLOUR),
+
+        /*
+        4.#Keyword
+         */
+        Token.of(
+            Pattern.compile("\\b(package|import|class|public|private|final|return|null|new)\\b"),
+            MiniJavaColours.KEYWORD_COLOUR),
+
+        /*
+        5.Annotation
+         */
+        Token.of(Pattern.compile("@\\w+"), MiniJavaColours.ANNOTATION_COLOUR),
+
+        /*
+        6.Characters
+         */
+        Token.of(Pattern.compile("'([^'\\\\]|\\\\.)'"), MiniJavaColours.CHAR_LITERAL_COLOUR));
   }
 }

@@ -9,10 +9,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Code auschecken
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Java 25 einrichten
-              uses: actions/setup-java@v4
+              uses: actions/setup-java@v5
               with:
                   java-version: '25'
                   distribution: 'temurin'
@@ -24,10 +24,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Code auschecken
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Java 25 einrichten
-              uses: actions/setup-java@v4
+              uses: actions/setup-java@v5
               with:
                   java-version: '25'
                   distribution: 'temurin'
@@ -40,10 +40,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Code auschecken
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Java 25 einrichten
-              uses: actions/setup-java@v4
+              uses: actions/setup-java@v5
               with:
                   java-version: '25'
                   distribution: 'temurin'
