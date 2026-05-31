@@ -2,6 +2,8 @@ package highlighting.regex;
 
 import highlighting.core.HighlightRegion;
 import highlighting.core.SyntaxHighlighter;
+import highlighting.presets.MiniJavaTokens;
+import java.util.ArrayList;
 import java.util.List;
 
 // TODO: Implement a simple regex-based highlighting strategy. Unlike the scanning approach, this
@@ -17,7 +19,13 @@ public class RegexHighlighter extends SyntaxHighlighter {
   // {@code HighlightRegion}s, and combine all of these regions into a single list.
   @Override
   public List<HighlightRegion> collectMatches(String text) {
-    throw new UnsupportedOperationException("not implemented yet");
+    List<HighlightRegion> allMatches = new ArrayList<>();
+
+    for (Token element : MiniJavaTokens.defaultTokens()) {
+      List<HighlightRegion> matchesFromToken = element.test(text);
+      allMatches.addAll(matchesFromToken);
+    }
+    return allMatches;
   }
 
   // TODO: Resolve overlapping regions. Assume that {@code regions} has been normalised and sorted.
@@ -26,6 +34,29 @@ public class RegexHighlighter extends SyntaxHighlighter {
   // position are preferred because of the sorting in {@code normalize}.
   @Override
   public List<HighlightRegion> resolveConflicts(List<HighlightRegion> regions) {
-    throw new UnsupportedOperationException("not implemented yet");
+    // Wenn die Liste leer ist gibt es auch nichts zutun
+    if (regions.isEmpty()) {
+      return regions;
+    }
+    List<HighlightRegion> resolvedList = new ArrayList<>();
+
+    // Unser erstes Region kann kein Konflikt auslösen und wird direkt übernommen
+    HighlightRegion lastAccept = regions.get(0);
+    resolvedList.add(lastAccept);
+
+    // Alle folgenden müssen geprüft werden
+    for (int i = 1; i < regions.size(); i++) {
+      HighlightRegion current = regions.get(i);
+      // Wenn das aktuelle Region innerhalb des zuletzt akzeptierten liegt, dann wird es geskipped
+      if (current.start() < lastAccept.end()) {
+        continue;
+      }
+      // Ansonsten gibt es keinen Konflikt und es wird akzeptiert
+      else {
+        resolvedList.add(current);
+        lastAccept = current;
+      }
+    }
+    return resolvedList;
   }
 }
