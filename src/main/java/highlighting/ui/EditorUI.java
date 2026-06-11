@@ -108,6 +108,10 @@ public final class EditorUI {
     var openItem = new JMenuItem("Öffnen...");
     openItem.addActionListener(e -> openFile());
 
+    // Button fuer formatierung
+    var formatItem = new JMenuItem("Code formatieren");
+    formatItem.addActionListener(e -> formatCodeWithPrettyPrinter());
+
     var saveItem = new JMenuItem("Speichern");
     saveItem.addActionListener(e -> saveFile(false));
 
@@ -115,6 +119,7 @@ public final class EditorUI {
     saveAsItem.addActionListener(e -> saveFile(true));
 
     fileMenu.add(openItem);
+    fileMenu.add(formatItem);
     fileMenu.add(saveItem);
     fileMenu.add(saveAsItem);
 
@@ -222,5 +227,33 @@ public final class EditorUI {
     StyleConstants.setBold(style, false);
     StyleConstants.setItalic(style, false);
     return style;
+  }
+
+  private void formatCodeWithPrettyPrinter() {
+    try {
+      // 1. Den aktuellen unordentlichen Text aus dem Editor holen
+      String currentText = doc.getText(0, doc.getLength());
+      if (currentText.isBlank()) return;
+
+      // 2. ANTLR-Infrastruktur aufbauen
+      var charStream = org.antlr.v4.runtime.CharStreams.fromString(currentText);
+      var lexer = new highlighting.antlr.MiniJavaLexer(charStream);
+      var tokenStream = new org.antlr.v4.runtime.CommonTokenStream(lexer);
+      var parser = new highlighting.antlr.MiniJavaParser(tokenStream);
+
+      // 3. Den Baum von der Wurzel aus parsen
+      var tree = parser.compilationUnit();
+
+      // 4. Deinen Pretty Printer mit z.B. 4 Leerzeichen Einrückung starten
+      var printer = new highlighting.antlr.PrettyPrinterVisitor(4);
+      printer.visit(tree);
+
+      // 5. Den formatierten Text zurück in den Editor schreiben
+      editorPane.setText(printer.result());
+      setStatus("Code erfolgreich formatiert.");
+
+    } catch (Exception ex) {
+      setStatus("Formatierungsfehler: " + ex.getMessage());
+    }
   }
 }

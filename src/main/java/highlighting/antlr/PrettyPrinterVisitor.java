@@ -45,8 +45,26 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // TODO:
     // Produce a nicely structured compilation unit:
     // - package declaration (if present),
+    if (ctx.packageDecl() != null) {
+      visit(ctx.packageDecl());
+      nl();
+      nl();
+    }
     // - import declarations (one per line),
+    if (ctx.importDecl() != null && !ctx.importDecl().isEmpty()) {
+      for (var importCtx : ctx.importDecl()) {
+        visit(importCtx);
+        nl();
+      }
+      nl();
+    }
     // - type declarations (one after another),
+    if (ctx.typeDecl() != null) {
+      for (var typeCtx : ctx.typeDecl()) {
+        visit(typeCtx);
+        nl();
+      }
+    }
     // with sensible blank lines between these parts.
     return null;
   }
@@ -58,6 +76,20 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // - opening and closing brace,
     // - one member declaration per line,
     // - members indented relative to the class.
+    write("{");
+    nl();
+
+    currentIndent++;
+
+    if (ctx.classBodyDeclaration() != null) {
+      for (var declarationCtx : ctx.classBodyDeclaration()) {
+        visit(declarationCtx);
+        nl();
+      }
+    }
+    currentIndent--;
+    write("}");
+
     return null;
   }
 
@@ -68,6 +100,19 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // - opening and closing brace,
     // - one blockStatement per line,
     // - nested blocks indented further.
+    write("{");
+    nl();
+
+    currentIndent++;
+
+    if (ctx.blockStatement() != null) {
+      for (var statementCtx : ctx.blockStatement()) {
+        visit(statementCtx);
+        nl();
+      }
+    }
+    currentIndent--;
+    write("}");
     return null;
   }
 
@@ -76,6 +121,11 @@ public final class PrettyPrinterVisitor extends MiniJavaBaseVisitor<Void> {
     // TODO:
     // Ensure that each statement (if/while/return/block/...) ends up
     // on exactly one line, with proper indentation for nested statements.
+    if (ctx.block() != null) {
+      visit(ctx.block());
+    } else {
+      visitChildren(ctx);
+    }
     return null;
   }
 

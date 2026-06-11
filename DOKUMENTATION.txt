@@ -1,0 +1,5 @@
+Fehlende Teile:
+
+- Whitespaces/Kommentare: Kommentare und Whitespaces werden beim Einlesen ignoriert. Der PreetyPrinter baut die logische Struktur von Grundauf wieder auf, wie z.b das Einrücken über indent
+
+- Zahlen: In den Tests fehlen auch Zahlen, wie z.b 10 und 5 da unser Lexer Aktuell noch keine Zahlen Tokens berücksichtigt

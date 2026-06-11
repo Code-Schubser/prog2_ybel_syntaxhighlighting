@@ -37,6 +37,7 @@ public final class MiniJavaTokens {
         Der Ausdruck "." reicht nicht, weil er am Ende der Zeile abbricht
         [\\s\\S] erlaubt alle sichtbaren und unsichtbaren Zeichen (darunter auch Zeilenumbrüche)
         */
+
         Token.of(Pattern.compile("/\\*[\\s\\S]*?\\*/"), MiniJavaColours.BLOCK_COMMENT_COLOUR),
 
         /*
