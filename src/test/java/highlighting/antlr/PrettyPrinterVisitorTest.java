@@ -6,9 +6,7 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.junit.jupiter.api.Test;
 
-/**
- * Generierter Test zur Darstellung der Ergebnisse :)
- */
+/** Generierter Test zur Darstellung der Ergebnisse :) */
 public class PrettyPrinterVisitorTest {
 
   private String format(String rawCode, int indentWidth) {
